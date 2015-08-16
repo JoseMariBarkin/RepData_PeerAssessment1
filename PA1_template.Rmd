@@ -58,4 +58,62 @@ intervals[intervals$steps == maxSteps,]$interval
 ```
 
 
+## Imputing missing values
+
+    1. Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
+
+    2. Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. 
+    For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
+
+    3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
+
+
+```{r echo = TRUE}
+dataAll <- read.csv("activity.csv", colClasses = c("numeric", "Date", "numeric"))
+
+# Get all the dates in the sample
+uAll <- unique(dataAll$date)
+
+# Get dates without missing values in the sample
+u <- unique(data$date)
+
+# Get date with missing values
+emptyDates <- uAll[!(uAll %in% u)]
+
+# Get mean values of steps per day
+mn <- mean(aggregate(steps ~ date, data, mean)$steps)
+
+# populate the missing step value with the mean value of steps per day mn obtained.
+dataAll$steps[dataAll$date == emptyDates[1]] <- mn
+dataAll$steps[dataAll$date == emptyDates[2]] <- mn
+dataAll$steps[dataAll$date == emptyDates[3]] <- mn
+dataAll$steps[dataAll$date == emptyDates[4]] <- mn
+dataAll$steps[dataAll$date == emptyDates[5]] <- mn
+dataAll$steps[dataAll$date == emptyDates[6]] <- mn
+dataAll$steps[dataAll$date == emptyDates[7]] <- mn
+dataAll$steps[dataAll$date == emptyDates[8]] <- mn
+```
+
+
+    4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps 
+    taken per day. 
+    Do these values differ from the estimates from the first part of the assignment? 
+    
+    * Yes, these values differ from the estimates from the first part of the assignment.  
+    
+    
+    What is the impact of imputing missing data on the estimates of the total daily number of steps?
+    
+    * The distribution of the steps per day does not change. 
+    These changes are reflected in the highest frequency of steps per day; since, 8 additional dates with means values of steps 
+    are computed.
+    
+
+
+```{r fig.width=10, fig.height=5, , echo = TRUE}
+totalStepsPerday <- aggregate(steps ~ date, dataAll, sum)
+
+hist(totalStepsPerday$steps,  breaks = 20, main="DISTRIBUTION OF STEPS PER DAY", , ylab = "FREQUENCY OF STEPS", xlab = "STEPS", col="purple")
+
+```
 
