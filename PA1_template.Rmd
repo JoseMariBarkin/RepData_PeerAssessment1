@@ -1,25 +1,43 @@
 ---
 title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
+author: "Jose Mari"
+date: "16 de agosto de 2015"
+output: html_document
 ---
 
 
 ## Loading and preprocessing the data
 
+    1. Load the data (i.e. read.csv())
+
+    2. Process/transform the data (if necessary) into a format suitable for your analysis
+
+
+```{r echo = TRUE}
+data <- na.omit(read.csv("activity.csv", colClasses = c("numeric", "Date", "numeric")))
+```
 
 
 ## What is mean total number of steps taken per day?
 
+    1. Make a histogram of the total number of steps taken each day
+
+```{r fig.width=10, fig.height=5, echo = TRUE}
+totalStepsPerday <- aggregate(steps ~ date, data, sum)
+hist(totalStepsPerday$steps,  breaks = 20, main="DISTRIBUTION OF STEPS PER DAY", , ylab = "FREQUENCY OF STEPS", xlab = "STEPS", col="purple")
+```
+
+    2. Calculate and report the mean and median total number of steps taken per day
+
+* Mean Steps Per Day
+```{r echo = TRUE}
+mean(totalStepsPerday$steps)
+```
+
+* Median Steps Per Day
+```{r echo = TRUE}
+median(totalStepsPerday$steps, na.rm=FALSE)
+```
 
 
-## What is the average daily activity pattern?
 
-
-
-## Imputing missing values
-
-
-
-## Are there differences in activity patterns between weekdays and weekends?
