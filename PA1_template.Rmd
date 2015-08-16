@@ -117,3 +117,40 @@ hist(totalStepsPerday$steps,  breaks = 20, main="DISTRIBUTION OF STEPS PER DAY",
 
 ```
 
+## Are there differences in activity patterns between weekdays and weekends?
+
+    For this part the weekdays() function may be of some help here. Use the dataset with the filled-in missing values for this part.
+
+    1. Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a 
+    weekday or weekend day.
+
+
+```{r echo = TRUE}
+dataExp <- na.omit(read.csv("activity.csv", colClasses = c("numeric", "Date", "numeric")))
+dataExp$day <- as.POSIXlt(dataExp$date,format="%Y-%m-%d")$wday
+
+weekday <- subset(dataExp, day != 0 & day != 6)
+weekday[4] <- "weekday"
+
+weekend <- subset(dataExp, day != 1 & day != 2 & day != 3 & day != 4 & day != 5)
+weekend[4] <- "weekend" 
+dataExpand <- rbind(weekday, weekend)
+```
+
+
+    2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) 
+    and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). 
+    The plot should look something like the following, which was creating using simulated data:
+
+
+```{r fig.width=10, fig.height=10, echo = TRUE}
+# Create a multi-paneled plotting window
+par(mfrow=c(2,1))
+
+# draw 1,1
+plot(aggregate(steps ~ interval, subset(dataExpand, dataExpand$day == "weekend"),mean), col="black", xlab="Interval", ylab="Number of steps", lwd = 2, main="weekend", type="l")
+
+# draw 2,1
+plot(aggregate(steps ~ interval, subset(dataExpand, dataExpand$day == "weekday"),mean), col="black", xlab="Interval", ylab="Number of steps", lwd = 2, main="weekday", type="l")
+```
+
